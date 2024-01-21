@@ -9,7 +9,6 @@ player_bank_rupee = 0
 
 got_key = False
 
-# Deze code (regel 9 en 10) zijn voor kamer 2
 eerste_getal = randint(10, 25)
 tweede_getal = randint(-5, 75)
 som = eerste_getal + tweede_getal
@@ -25,9 +24,6 @@ time.sleep(1)
 
 
 # === [kamer 7] === #
-
-# De speler kan nu, na het vinden van de ruppee, 
-# kiezen welke kant deze op wil (bijvoorbeeld rechtdoor of naar rechts).
 
 print("Je stapt door de deur en ziet een Rupee op de grond liggen.")
 print("Wat je ermee kunt is nog een raadsel, je neemt het in ieder geval mee.")
@@ -94,26 +90,84 @@ if deurkeuze_kamer_7 == "a":
                     break
 
 
+# === [kamer 8] === #
+
+# De nieuwe kamer komt voor de kamer van de Goblin.
+# Hier heeft de speler de optie om de gokmachine te gebruiken als hij/zij dat wil. 
+
+# De gokmachine werkt als volgt: 
+# Er worden 2 (zeszijdige) dobbelstenen gerold is het totaal meer dan 7 dan verdubbelt het aantal rupees dat de speler heeft, 
+# is het totaal aantal minder dan 7 dan verliest de speler 1 health. 
+# Is het totaal gelijk aan 7 dan krijgt de speler 1 ruppee en 4 health.
+
+# Is de health van de speler 0 dan verliest de speler het spel
+
+print("Je stapt in een hele lange kamer")
+print("Je ziet een gokmachine staan en loopt er naartoe.")
+gok_keuze = input("(a) Wil je de gokmachine gebruiken of (Enter) wil je naar de deur links van je? ")
+dobbelsteen_1 = randint(1, 6)
+dobbelsteen_2 = randint(1, 6)
+got_dices = dobbelsteen_1 + dobbelsteen_2
+if gok_keuze == "a":
+    print("De gokmachine gaat 2 dobbelstenen dobbelen. Bij 7 ogen krijg je iets, hoger krijg je iets, maar als het onder de 7 is. Krijg je -1 hp")
+    time.sleep(1)
+    print(f"De eerste dobbelsteen: {dobbelsteen_1}")
+    time.sleep(1)
+    print(f"De tweede dobbelsteen: {dobbelsteen_2}")
+    time.sleep(1)
+    print(f"Samen heb je {got_dices} ogen gegooid.")
+    if got_dices < 7:
+        player_health -= 1
+        print("Helaas je hebt te weinig ogen.")
+        print(f"Er gaat -1 health van je totaal af. Nu heb je nog {player_health} hp.")
+        if player_health <= 0:
+            print("Helaas je bent te gewond om verder door te gaan.")
+            print("Game Over")
+            exit()
+    elif got_dices == 7:
+        print("Je hebt precies 7 ogen. Je krijgt +1 rupee en +4 health")
+        player_bank_rupee += 1
+        player_health += 4
+        print(f"Je hebt nu {player_bank_rupee} rupee en {player_health} health. ")
+    else:
+        print("Je hebt meer dan 7 ogen. Het aantal rupee en health dat je hebt is zojuist verdubbeld.")
+        player_bank_rupee += player_bank_rupee
+        print(f"Je hebt nu {player_bank_rupee} rupee. ")
+print('')
+time.sleep(1)
+
 # === [kamer 3] === #
 
-items = ("schild", "zwaard")
+# De goblin kan aanvoelen hoeveel rupees de speler heeft, 
+# dus bij het aanbieden van zijn verkoopwaren stelt hij gericht de vraag wat de speler wilt. 
+# Als de speler dus 2 rupees heeft moeten beide items dus ook gekocht kunnen worden.
 
-print('Je duwt het open en stap een hele lange kamer binnen.')
+items_goblin = ["schild", "zwaard"]
+
+print('Je duwt de volgende deur open en stapt in een grote kamer binnen.') # grammatica goed checken
 print(f'In deze kamer staat een tafel met daarbij een goblin.')
-print(f"Op de tafel staan wat items. Dit zie je staan: {items}")
-print(f"De goblin vraagt per item 1 rupee. Je kunt maar 1 van de ", (len(items)), " kiezen.")
-item_keuze = input("Wil je het schild of het zwaard kopen? of niks? ")
-if item_keuze == "schild":
-    item = "schild"
-    player_defense += 1
-    print(f"Top je hebt voor het {item} gekozen.")
-elif item_keuze == "zwaard":
-    item = "zwaard"
-    player_attack += 2
-    print(f"Top je hebt voor het {item} gekozen.")
-else:
-    print("Je kiest ervoor om niks te kopen")
-
+print(f"Op de tafel staan wat items. Dit zie je staan: {items_goblin}")
+while player_bank_rupee >= 1:
+    print(f"De goblin vraagt per item 1 rupee. Je kunt 1 van de ", (len(items_goblin)), " items kiezen.")
+    item_keuze = input("Welk item wil je kopen? of niks? ")
+    if item_keuze == "schild" and item_keuze in items_goblin:
+        item = "schild"
+        player_defense += 1
+        print(f"Top je hebt voor het {item} gekozen.")
+        items_goblin.remove(item_keuze)
+        player_bank_rupee -= 1
+    elif item_keuze == "zwaard" and item_keuze in items_goblin:
+        item = "zwaard"
+        player_attack += 2
+        print(f"Top je hebt voor het {item} gekozen.")
+        items_goblin.remove(item_keuze)
+        player_bank_rupee -= 1
+    else:
+        if item_keuze == "":
+            print("Je kiest ervoor om niks te kopen")
+            break
+        elif item_keuze not in items_goblin:
+            print(f"{item_keuze} heeft de goblin niet.")
 print('Op naar de volgende deur.')
 print('')
 time.sleep(1)
@@ -154,7 +208,6 @@ else:
                 print("Je hebt de Cpu gedood. ")
                 print(f'Je health is nu {player_health}.')
                 break
-
 print('')
 time.sleep(1)
 
