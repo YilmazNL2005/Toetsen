@@ -43,72 +43,41 @@ print("Maar links zie je ook een deur.")
 deurkeuze_kamer_2 = input("Welke van de twee deuren wil je nemen? (a) De deur achter het stanndbeeld of (Enter) de deur rechts van het standbeeld? ")
 print('')
 time.sleep(1)
+zombie_attack = 1
+zombie_defense = 0
+zombie_health = 2
+
 
 # Kamer 6
 
+# entiteiten_lijst = [player_health, zombie_health]
 if deurkeuze_kamer_2.lower() == "a":
-    zombie_attack = 1
-    zombie_defense = 0
-    zombie_health = 2
-    hoeveelheid_zombie_damage = (zombie_attack - player_defense) # Dit is de hoeveelheid schade een zombie kan toebrengen aan de speler PER SLAG.
-    if hoeveelheid_zombie_damage <= 0:
+    zombie_hit_damage = (zombie_attack - player_defense) # Dit is de hoeveelheid schade een zombie kan toebrengen aan de speler PER SLAG.
+    player_hit_damage = (player_attack - zombie_defense)
+    if zombie_hit_damage <= 0:
         print('Jij hebt een te goede verdediging voor de zombie, hij kan je geen schade toebrengen.')
     else:
-        # hoeveelheid_zombie_damage = (zombie_attack - player_defense)
-        
         while zombie_health > 0 or player_health > 0:
-            zombie_health - player_attack
+            zombie_health -= player_hit_damage
+            print(zombie_health, "Zombie")
             if zombie_health > 0:
-                player_health - zombie_attack
+                player_health -= zombie_hit_damage
+                print(player_health, "Speler")
                 if player_health > 0:
                     continue
                 else:
-                    break
+                    print("Helaas je bent te gewond om verder door te gaan.")
+                    print("Game Over")
+                    exit()
+                    # break
             else:
+                print("Je hebt de zombie gedood. ")
+                print(f'Je health is nu {player_health}.')
                 break
-        # regel 59 tot 68 is nog in onderhoud.
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        player_hit_damage = (player_attack - zombie_defense) # Dit is de hoeveelheid schade een speler kan toebrengen aan een vijand PER SLAG
-        
-        zombie_slagen = math.ceil(player_health // hoeveelheid_zombie_damage) # Dit is de hoeveelheid keren een zombie nodig heeft om een speler te doden.
-                                    # 3                 # 1             dus 3 slagen om een speler te doden
-        player_slagen = math.ceil(zombie_health // player_hit_damage) # Dit is de hoeveelheid keren een speler nodig heeft om een vijand te doden
-                                    # 2                 # 1             dus 2 slagen om de vijand te doden
-        
-        zombie_attack_hits = zombie_slagen * zombie_attack             # Totaal aantal slagen een zombie doet om een speler te doden.
-        player_attack_hits = player_slagen * player_attack             # Totaal aantal slagen een speler doet om een vijand te doden.
 
-        player_health = player_health - zombie_attack_hits
-        zombie_health = zombie_health - player_attack_hits
-        
-        if player_slagen < zombie_slagen:
-            print(f'In {player_slagen} rondes versla je de zombie.')
-            print(f'Je health is nu {player_health}.')
-            if player_health <= 0:
-                print("Helaas je bent te gewond om verder door te gaan.")
-                print("Game Over")
-                exit()
-        else:
-            print('Helaas is de zombie te sterk voor je.')
-            print('Game over.')
-            exit()
 
 # === [kamer 3] === #
+
 items = ("schild", "zwaard")
 welk_item = random.choice(items)
 if welk_item == "schild":
@@ -125,43 +94,44 @@ print('Op naar de volgende deur.')
 print('')
 time.sleep(1)
 
+
 # === [kamer 4] === #
 
 cpu_attack = 2
 cpu_defense = 0
 cpu_health = 3
 cpu_hit_damage = (cpu_attack - player_defense)
-
+player_hit_damage = (player_attack - cpu_defense)
 print(f'Dapper met je nieuwe {item} loop je de kamer binnen.')
 print('Je loopt tegen een Cpu aan.')
 
 if cpu_hit_damage <= 0:
     print("Je hebt een te goede verdediging voor de Cpu, hij kan je geen schade toebrengen")
 else:
-    cpu_hit_damage = (cpu_attack - player_defense)
-    cpu_attack_amount = math.ceil(player_health / cpu_hit_damage)
-
-    player_hit_damage = (player_attack - cpu_defense)
-    player_slagen = math.ceil(cpu_health / player_hit_damage)
-
-    cpu_attack_hits = cpu_attack_amount * cpu_attack
-    player_health = player_health - cpu_attack_hits
-    if player_slagen < cpu_attack_amount:
-        print(f'In {player_slagen} rondes versla je de Cpu.')
-        print(f'Je health is nu {player_health}.')
-        if player_health <= 0:
-            print("Helaas je bent te gewond om verder door te gaan.")
-            print("Game Over")
-            exit()
-    else:
-        print("Helaas de Cpu is te sterk voor je.")
-        print("Game Over")
-        exit()
+    while cpu_health > 0 or player_health > 0:
+            cpu_health -= player_hit_damage
+            print(cpu_health, "Cpu")
+            if cpu_health > 0:
+                player_health -= cpu_hit_damage
+                print(player_health, "Speler")
+                if player_health > 0:
+                    continue
+                else:
+                    print("Helaas je bent te gewond om verder door te gaan.")
+                    print("Game Over")
+                    exit()
+                    # break
+            else:
+                print("Je hebt de Cpu gedood. ")
+                print(f'Je health is nu {player_health}.')
+                break
 
 print('')
 time.sleep(1)
 
+
 # === [kamer 5] === #
+
 print('Voorzichtig open je de deur, je wilt niet nog een zombie tegenkomen.')
 print('Tot je verbazig zie je een schatkist in het midden van de kamer staan.')
 print('Je loopt er naartoe.')
