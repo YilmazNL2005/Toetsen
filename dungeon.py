@@ -241,6 +241,50 @@ print('')
 time.sleep(1)
 
 
+# === [kamer 10] === #
+
+# De nieuwe kamer bevat een dungeon boss. 
+# Deze heeft een attack van 3, 1 defence en 5 health.
+
+# Dit is de eerste vijand met meer dan 0 defence, 
+# dus houd er rekening mee dat de hit damage van de speler ook 0 kan worden in het gevecht.
+
+boss_attack = 3
+boss_defense = 1
+boss_health = 5
+boss_hit_damage = (boss_attack - player_defense)
+player_hit_damage = (player_attack - boss_defense)
+
+print("Je komt een erg grote kamer binnen")
+time.sleep(1)
+print("Het is de Dungeon Boss")
+print("Om langs de volgende deur te gaan, moet je de boss doden.")
+time.sleep(1)
+if player_hit_damage < 0:
+    print("De Dungeon Boss is te sterk.")
+    print("Game Over")
+    exit()
+else:
+    while boss_health > 0 or player_health > 0:
+        boss_health -= player_hit_damage
+        print(boss_health, "Boss")
+        if boss_health > 0:
+            player_health -= boss_hit_damage
+            print(player_health, "Speler")
+            if player_health > 0:
+                continue
+            else:
+                print("Helaas je bent te gewond om verder door te gaan.")
+                print("Game Over")
+                exit()
+        else:
+            print("Je hebt de Dungeon Boss gedood. ")
+            print(f'Je health is nu {player_health}.')
+            break
+print("")
+time.sleep(2)
+
+
 # === [kamer 5] === #
 
 print('Voorzichtig open je de deur, je wilt niet nog een zombie tegenkomen.')
