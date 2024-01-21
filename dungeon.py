@@ -26,79 +26,75 @@ time.sleep(1)
 
 # === [kamer 7] === #
 
+# De speler kan nu, na het vinden van de ruppee, 
+# kiezen welke kant deze op wil (bijvoorbeeld rechtdoor of naar rechts).
+
 print("Je stapt door de deur en ziet een Rupee op de grond liggen.")
 print("Wat je ermee kunt is nog een raadsel, je neemt het in ieder geval mee.")
 player_bank_rupee += 1
 print(player_bank_rupee)
-print("Recht voor je staat een deur.")
+deurkeuze_kamer_7 = input("Je ziet 2 deuren. (a) Wil je rechtdoor of (Enter) wil je naar rechts? ")
 print('')
 time.sleep(1)
 
 
 # === [kamer 2] === #
 
-# In kamer 2 kan een speler, na de interactie met het standbeeld, 
-# uit twee verschillende kanten kiezen (kamer 6 en kamer 3). 
-# Kamer 3 is hierbij nog steeds te bereiken via kamer 6.
+if deurkeuze_kamer_7 == "a":
+    print('Je stapt door de deur heen en je ziet een standbeeld voor je.')
+    print('Het standbeeld heeft een sleutel vast.')
+    print('Op zijn borst zit een numpad met de toetsen 0 t/m 9.')
+    print(f'Daarboven zie je een som staan ', eerste_getal, " + ", tweede_getal, ' ? ')
+    antwoord = int(input('Wat is het antwoord? '))
 
-print('Je stapt door de deur heen en je ziet een standbeeld voor je.')
-print('Het standbeeld heeft een sleutel vast.')
-print('Op zijn borst zit een numpad met de toetsen 0 t/m 9.')
-print(f'Daarboven zie je een som staan ', eerste_getal, " + ", tweede_getal, ' ? ')
-antwoord = int(input('Wat is het antwoord? '))
+    if antwoord == som:
+        print('Het stadbeeld laat de sleutel vallen en je pakt het op')
+        got_key = True
+    else:
+        print('Er gebeurt niets....')
 
-if antwoord == som:
-    print('Het stadbeeld laat de sleutel vallen en je pakt het op')
-    got_key = True
-else:
-    print('Er gebeurt niets....')
-
-print('Je ziet een deur achter het standbeeld.')
-print("Maar links zie je ook een deur.")
-deurkeuze_kamer_2 = input("Welke van de twee deuren wil je nemen? (a) De deur achter het stanndbeeld of (Enter) de deur rechts van het standbeeld? ")
-print('')
-time.sleep(1)
+    print('Je ziet een deur achter het standbeeld.')
+    print("Maar links zie je ook een deur.")
+    deurkeuze_kamer_2 = input("Welke van de twee deuren wil je nemen? (a) De deur achter het stanndbeeld of (Enter) de deur rechts van het standbeeld? ")
+    print('')
+    time.sleep(1)
 
 
 # === [kamer 6] === #
 
-zombie_attack = 1
-zombie_defense = 0
-zombie_health = 2
-# entiteiten_lijst = [player_health, zombie_health]
-if deurkeuze_kamer_2.lower() == "a":
-    zombie_hit_damage = (zombie_attack - player_defense) # Dit is de hoeveelheid schade een zombie kan toebrengen aan de speler PER SLAG.
-    player_hit_damage = (player_attack - zombie_defense)
-    if zombie_hit_damage <= 0:
-        print('Jij hebt een te goede verdediging voor de zombie, hij kan je geen schade toebrengen.')
-    else:
-        while zombie_health > 0 or player_health > 0:
-            zombie_health -= player_hit_damage
-            print(zombie_health, "Zombie")
-            if zombie_health > 0:
-                player_health -= zombie_hit_damage
-                print(player_health, "Speler")
-                if player_health > 0:
-                    continue
+    zombie_attack = 1
+    zombie_defense = 0
+    zombie_health = 2
+    # entiteiten_lijst = [player_health, zombie_health]
+    if deurkeuze_kamer_2.lower() == "a":
+        zombie_hit_damage = (zombie_attack - player_defense) # Dit is de hoeveelheid schade een zombie kan toebrengen aan de speler PER SLAG.
+        player_hit_damage = (player_attack - zombie_defense)
+        if zombie_hit_damage <= 0:
+            print('Jij hebt een te goede verdediging voor de zombie, hij kan je geen schade toebrengen.')
+        else:
+            while zombie_health > 0 or player_health > 0:
+                zombie_health -= player_hit_damage
+                print(zombie_health, "Zombie")
+                if zombie_health > 0:
+                    player_health -= zombie_hit_damage
+                    print(player_health, "Speler")
+                    if player_health > 0:
+                        continue
+                    else:
+                        print("Helaas je bent te gewond om verder door te gaan.")
+                        print("Game Over")
+                        exit()
+                        # break
                 else:
-                    print("Helaas je bent te gewond om verder door te gaan.")
-                    print("Game Over")
-                    exit()
-                    # break
-            else:
-                print("Je hebt de zombie gedood. ")
-                print(f'Je health is nu {player_health}.')
-                print("Je loopt door de volgende deur.")
-                print('')
-                time.sleep(1)
-                break
+                    print("Je hebt de zombie gedood. ")
+                    print(f'Je health is nu {player_health}.')
+                    print("Je loopt door de volgende deur.")
+                    print('')
+                    time.sleep(1)
+                    break
 
 
 # === [kamer 3] === #
-
-# Dit is nu een verkooppunt, 
-# ieder item dat de goblin verkoopt kost 1 rupee. 
-# De speler mag nu zelf kiezen of hij/zij iets koopt en wat.
 
 items = ("schild", "zwaard")
 
