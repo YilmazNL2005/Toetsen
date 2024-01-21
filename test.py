@@ -2,9 +2,11 @@
 # if naam == "yilmaz":
 #     print("Je hebt gratis bezorging.")
 # print("Hartelijk welkom", naam, "")
-a = 3
-print(a)
-b = 2
-print(b)
-b += b
-print(b)
+
+
+# b = 5 
+# if b == 5:
+#     a = input("Vul wat in")
+# a = a
+# if a == "a":
+#     print("Deze if is true")

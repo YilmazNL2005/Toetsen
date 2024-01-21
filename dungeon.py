@@ -25,9 +25,6 @@ time.sleep(1)
 
 # === [kamer 7] === #
 
-# De wizard heeft deze kamer ook betoverd 
-# er is nu een kans van 1 op 10 dat er geen rupee ligt in deze kamer.
-
 print("Je stapt door de deur en ziet een Rupee op de grond liggen.")
 print("Wat je ermee kunt is nog een raadsel, je neemt het in ieder geval mee...")
 time.sleep(1)
@@ -44,21 +41,20 @@ time.sleep(1)
 
 # === [kamer 2] === #
 
-# In plaats van het krijgen van een sleutel bij een goed antwoord krijg je nu een ruppee.
-
 if deurkeuze_kamer_7 == "a":
     print('Je stapt door de deur heen en je ziet een standbeeld voor je.')
     print('Het standbeeld heeft een sleutel vast.')
     print('Op zijn borst zit een numpad met de toetsen 0 t/m 9.')
     print(f'Daarboven zie je een som staan ', eerste_getal, " + ", tweede_getal, ' ? ')
     antwoord = int(input('Wat is het antwoord? '))
+    time.sleep(1)
     if antwoord == som:
-        print('Het stadbeeld laat een rupee vallen en je pakt het op')
+        print('Het standbeeld laat een rupee vallen en je pakt het op')
         player_bank_rupee += 1
         print(f"Je hebt nu {player_bank_rupee} rupee.")
     else:
         print('Er gebeurt niets....')
-
+    time.sleep(1)
     print('Je ziet een deur achter het standbeeld.')
     print("Maar links zie je ook een deur.")
     deurkeuze_kamer_2 = input("Welke van de twee deuren wil je nemen? (a) De deur achter het stanndbeeld of (Enter) de deur rechts van het standbeeld? ")
@@ -68,11 +64,13 @@ if deurkeuze_kamer_7 == "a":
 
 # === [kamer 6] === #
 
+# De speler kan nu kiezen om ook vanuit hier naar kamer 3 te gaan.
+
     zombie_attack = 1
     zombie_defense = 0
     zombie_health = 2
     # entiteiten_lijst = [player_health, zombie_health]
-    if deurkeuze_kamer_2.lower() == "a":
+    if deurkeuze_kamer_7 == "" or deurkeuze_kamer_2.lower() == "a":
         zombie_hit_damage = (zombie_attack - player_defense) # Dit is de hoeveelheid schade een zombie kan toebrengen aan de speler PER SLAG.
         player_hit_damage = (player_attack - zombie_defense)
         if zombie_hit_damage <= 0:
@@ -98,71 +96,70 @@ if deurkeuze_kamer_7 == "a":
                     print('')
                     time.sleep(1)
                     break
+        deurkeuze_kamer_6 = input("Je ziet 2 deuren. (Enter) Wil je rechtdoor gaan of (a) wil je naar rechts? ")
+        time.sleep(1)
 
 
 # === [kamer 8] === #
 
-print("Je stapt in een hele lange kamer")
-print("Je ziet een gokmachine staan en loopt er naartoe.")
-gok_keuze = input("(a) Wil je de gokmachine gebruiken of (Enter) wil je naar de deur links van je? ")
-dobbelsteen_1 = randint(1, 6)
-dobbelsteen_2 = randint(1, 6)
-got_dices = dobbelsteen_1 + dobbelsteen_2
-if gok_keuze == "a":
-    print("De gokmachine gaat 2 dobbelstenen dobbelen. Bij 7 ogen krijg je iets, hoger krijg je iets, maar als het onder de 7 is. Krijg je -1 hp")
+# De speler kan nu kiezen om ook vanuit hier naar kamer 3 te gaan.
+
+if deurkeuze_kamer_7 == "" or deurkeuze_kamer_2 == "" or deurkeuze_kamer_6 == "a":
+    print("Je stapt in een hele lange kamer")
+    print("Je ziet een gokmachine staan en loopt er naartoe.")
+    gok_keuze = input("(a) Wil je de gokmachine gebruiken of (Enter) niet? ")
+    dobbelsteen_1 = randint(1, 6)
+    dobbelsteen_2 = randint(1, 6)
+    got_dices = dobbelsteen_1 + dobbelsteen_2
+    if gok_keuze == "a":
+        print("De gokmachine gaat 2 dobbelstenen dobbelen. Bij 7 ogen krijg je iets, hoger krijg je iets, maar als het onder de 7 is. Krijg je -1 hp")
+        time.sleep(1)
+        print(f"De eerste dobbelsteen: {dobbelsteen_1}")
+        time.sleep(1)
+        print(f"De tweede dobbelsteen: {dobbelsteen_2}")
+        time.sleep(1)
+        print(f"Samen heb je {got_dices} ogen gegooid.")
+        if got_dices < 7:
+            player_health -= 1
+            print("Helaas je hebt te weinig ogen.")
+            print(f"Er gaat -1 health van je totaal af. Nu heb je nog {player_health} hp.")
+            if player_health <= 0:
+                print("Helaas je bent te gewond om verder door te gaan.")
+                print("Game Over")
+                exit()
+        elif got_dices == 7:
+            print("Je hebt precies 7 ogen. Je krijgt +1 rupee en +4 health")
+            player_bank_rupee += 1
+            player_health += 4
+            print(f"Je hebt nu {player_bank_rupee} rupee en {player_health} health. ")
+        else:
+            print("Je hebt meer dan 7 ogen. Het aantal rupee en health dat je hebt is zojuist verdubbeld.")
+            player_bank_rupee += player_bank_rupee
+            print(f"Je hebt nu {player_bank_rupee} rupee. ")
+    deurkeuze_kamer_8 = input("Je ziet 2 deuren. (Enter) Wil je links gaan of (a) wil je naar rechts? ")
+    print('')
     time.sleep(1)
-    print(f"De eerste dobbelsteen: {dobbelsteen_1}")
-    time.sleep(1)
-    print(f"De tweede dobbelsteen: {dobbelsteen_2}")
-    time.sleep(1)
-    print(f"Samen heb je {got_dices} ogen gegooid.")
-    if got_dices < 7:
-        player_health -= 1
-        print("Helaas je hebt te weinig ogen.")
-        print(f"Er gaat -1 health van je totaal af. Nu heb je nog {player_health} hp.")
-        if player_health <= 0:
-            print("Helaas je bent te gewond om verder door te gaan.")
-            print("Game Over")
-            exit()
-    elif got_dices == 7:
-        print("Je hebt precies 7 ogen. Je krijgt +1 rupee en +4 health")
-        player_bank_rupee += 1
-        player_health += 4
-        print(f"Je hebt nu {player_bank_rupee} rupee en {player_health} health. ")
-    else:
-        print("Je hebt meer dan 7 ogen. Het aantal rupee en health dat je hebt is zojuist verdubbeld.")
-        player_bank_rupee += player_bank_rupee
-        print(f"Je hebt nu {player_bank_rupee} rupee. ")
-print('')
-time.sleep(1)
 
 
 # === [kamer 9] === #
 
-# Een nieuwe kamer tussen kamer 8 en 3. 
-# Op deze kamer zit een betovering, 
-# als je hier naar binnen loopt krijg je random of 1 defence of 2 health er bij.
-
-health_defense = randint(1,2)
-print("Je ziet dat de gehele kamer een vreemde glinstering heeft. Misschien is het betoverd")
-time.sleep(1)
-if health_defense == 1:
-    print(f"Je krijgt +{health_defense} defense erbij.")
-    player_defense += 1
-    print(f"Je hebt nu {player_defense} defense.")
-else:
-    print(f"Je krijgt +{health_defense} health erbij.")
-    player_health += 2
-    print(f"Je hebt nu {player_health} health.")
-print("")
-time.sleep(1)
+    if deurkeuze_kamer_8 == "a":
+        health_defense = randint(1,2)
+        print("Je ziet dat de gehele kamer een vreemde glinstering heeft. Misschien is het betoverd")
+        time.sleep(1)
+        if health_defense == 1:
+            print(f"Je krijgt +{health_defense} defense erbij.")
+            player_defense += 1
+            print(f"Je hebt nu {player_defense} defense.")
+        else:
+            print(f"Je krijgt +{health_defense} health erbij.")
+            player_health += 2
+            print(f"Je hebt nu {player_health} health.")
+        print("")
+        time.sleep(1)
 
 
 # === [kamer 3] === #
-
-# De goblin breid zijn assortiment uit met de sleutel voor de schatkist en verhuist een kamer opzij. 
-# Ook bestaat nu de kans dat de speler geen ruppees heeft, 
-# dus houd hier ook rekening mee.
 
 items_goblin = ["schild", "zwaard", "sleutel"]
 
@@ -213,7 +210,7 @@ cpu_health = 3
 cpu_hit_damage = (cpu_attack - player_defense)
 player_hit_damage = (player_attack - cpu_defense)
 if item_keuze == "schild" or item_keuze == "zwaard":
-    print(f'Dapper met je nieuwe {item} loop je de kamer binnen.')
+    print(f'Dapper met je nieuwe {item} loop je de kamer binnen.') # Nu benoemd de print maar 1 item. Het laatste wat gekocht is. Een list met de gekochte items kan het evt oplossen.
 else:
     print("Je loopt de volgende kamer in")
 print('Je loopt tegen een Cpu aan.')
