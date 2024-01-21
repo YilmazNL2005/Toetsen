@@ -25,10 +25,18 @@ time.sleep(1)
 
 # === [kamer 7] === #
 
+# De wizard heeft deze kamer ook betoverd 
+# er is nu een kans van 1 op 10 dat er geen rupee ligt in deze kamer.
+
 print("Je stapt door de deur en ziet een Rupee op de grond liggen.")
-print("Wat je ermee kunt is nog een raadsel, je neemt het in ieder geval mee.")
-player_bank_rupee += 1
-print(player_bank_rupee)
+print("Wat je ermee kunt is nog een raadsel, je neemt het in ieder geval mee...")
+time.sleep(1)
+verdwijning_rupee = randint(1,10)
+if verdwijning_rupee == 10:
+    print("De rupee is plotseling verdwenen toen je het wilde oppakken")
+else:
+    player_bank_rupee += 1
+    print(f"Je hebt {player_bank_rupee} rupee")    
 deurkeuze_kamer_7 = input("Je ziet 2 deuren. (a) Wil je rechtdoor of (Enter) wil je naar rechts? ")
 print('')
 time.sleep(1)
@@ -36,16 +44,18 @@ time.sleep(1)
 
 # === [kamer 2] === #
 
+# In plaats van het krijgen van een sleutel bij een goed antwoord krijg je nu een ruppee.
+
 if deurkeuze_kamer_7 == "a":
     print('Je stapt door de deur heen en je ziet een standbeeld voor je.')
     print('Het standbeeld heeft een sleutel vast.')
     print('Op zijn borst zit een numpad met de toetsen 0 t/m 9.')
     print(f'Daarboven zie je een som staan ', eerste_getal, " + ", tweede_getal, ' ? ')
     antwoord = int(input('Wat is het antwoord? '))
-
     if antwoord == som:
-        print('Het stadbeeld laat de sleutel vallen en je pakt het op')
-        got_key = True
+        print('Het stadbeeld laat een rupee vallen en je pakt het op')
+        player_bank_rupee += 1
+        print(f"Je hebt nu {player_bank_rupee} rupee.")
     else:
         print('Er gebeurt niets....')
 
@@ -92,16 +102,6 @@ if deurkeuze_kamer_7 == "a":
 
 # === [kamer 8] === #
 
-# De nieuwe kamer komt voor de kamer van de Goblin.
-# Hier heeft de speler de optie om de gokmachine te gebruiken als hij/zij dat wil. 
-
-# De gokmachine werkt als volgt: 
-# Er worden 2 (zeszijdige) dobbelstenen gerold is het totaal meer dan 7 dan verdubbelt het aantal rupees dat de speler heeft, 
-# is het totaal aantal minder dan 7 dan verliest de speler 1 health. 
-# Is het totaal gelijk aan 7 dan krijgt de speler 1 ruppee en 4 health.
-
-# Is de health van de speler 0 dan verliest de speler het spel
-
 print("Je stapt in een hele lange kamer")
 print("Je ziet een gokmachine staan en loopt er naartoe.")
 gok_keuze = input("(a) Wil je de gokmachine gebruiken of (Enter) wil je naar de deur links van je? ")
@@ -136,20 +136,46 @@ if gok_keuze == "a":
 print('')
 time.sleep(1)
 
+
+# === [kamer 9] === #
+
+# Een nieuwe kamer tussen kamer 8 en 3. 
+# Op deze kamer zit een betovering, 
+# als je hier naar binnen loopt krijg je random of 1 defence of 2 health er bij.
+
+health_defense = randint(1,2)
+print("Je ziet dat de gehele kamer een vreemde glinstering heeft. Misschien is het betoverd")
+time.sleep(1)
+if health_defense == 1:
+    print(f"Je krijgt +{health_defense} defense erbij.")
+    player_defense += 1
+    print(f"Je hebt nu {player_defense} defense.")
+else:
+    print(f"Je krijgt +{health_defense} health erbij.")
+    player_health += 2
+    print(f"Je hebt nu {player_health} health.")
+print("")
+time.sleep(1)
+
+
 # === [kamer 3] === #
 
-# De goblin kan aanvoelen hoeveel rupees de speler heeft, 
-# dus bij het aanbieden van zijn verkoopwaren stelt hij gericht de vraag wat de speler wilt. 
-# Als de speler dus 2 rupees heeft moeten beide items dus ook gekocht kunnen worden.
+# De goblin breid zijn assortiment uit met de sleutel voor de schatkist en verhuist een kamer opzij. 
+# Ook bestaat nu de kans dat de speler geen ruppees heeft, 
+# dus houd hier ook rekening mee.
 
-items_goblin = ["schild", "zwaard"]
+items_goblin = ["schild", "zwaard", "sleutel"]
 
 print('Je duwt de volgende deur open en stapt in een grote kamer binnen.') # grammatica goed checken
 print(f'In deze kamer staat een tafel met daarbij een goblin.')
 print(f"Op de tafel staan wat items. Dit zie je staan: {items_goblin}")
+if player_bank_rupee <= 0:
+    print("Je hebt geen rupees om te besteden.")
+    time.sleep(1)
 while player_bank_rupee >= 1:
+    print(f"Je hebt op dit moment {player_bank_rupee} rupees.")
     print(f"De goblin vraagt per item 1 rupee. Je kunt 1 van de ", (len(items_goblin)), " items kiezen.")
-    item_keuze = input("Welk item wil je kopen? of niks? ")
+    item_keuze = input("Welk item wil je kopen? of (Enter) niks? ")
     if item_keuze == "schild" and item_keuze in items_goblin:
         item = "schild"
         player_defense += 1
@@ -160,6 +186,12 @@ while player_bank_rupee >= 1:
         item = "zwaard"
         player_attack += 2
         print(f"Top je hebt voor het {item} gekozen.")
+        items_goblin.remove(item_keuze)
+        player_bank_rupee -= 1
+    elif item_keuze == "sleutel" and item_keuze in items_goblin:
+        item = "sleutel"
+        got_key = True
+        print(f"Top je hebt voor de {item} gekozen.")
         items_goblin.remove(item_keuze)
         player_bank_rupee -= 1
     else:
