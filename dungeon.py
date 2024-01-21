@@ -5,6 +5,7 @@ import random
 player_attack = 1
 player_defense = 0
 player_health = 3
+player_bank_rupee = 0
 
 got_key = False
 
@@ -13,12 +14,26 @@ eerste_getal = randint(10, 25)
 tweede_getal = randint(-5, 75)
 som = eerste_getal + tweede_getal
 
+
 # === [kamer 1] === #
+
 print('Door de twee grote deuren loop je een gang binnen.')
 print('Het ruikt hier muf en vochtig.')
 print('Je ziet een deur voor je.')
 print('')
 time.sleep(1)
+
+
+# === [kamer 7] === #
+
+print("Je stapt door de deur en ziet een Rupee op de grond liggen.")
+print("Wat je ermee kunt is nog een raadsel, je neemt het in ieder geval mee.")
+player_bank_rupee += 1
+print(player_bank_rupee)
+print("Recht voor je staat een deur.")
+print('')
+time.sleep(1)
+
 
 # === [kamer 2] === #
 
@@ -38,18 +53,18 @@ if antwoord == som:
 else:
     print('Er gebeurt niets....')
 
-print('Je zie een deur achter het standbeeld.')
+print('Je ziet een deur achter het standbeeld.')
 print("Maar links zie je ook een deur.")
 deurkeuze_kamer_2 = input("Welke van de twee deuren wil je nemen? (a) De deur achter het stanndbeeld of (Enter) de deur rechts van het standbeeld? ")
 print('')
 time.sleep(1)
+
+
+# === [kamer 6] === #
+
 zombie_attack = 1
 zombie_defense = 0
 zombie_health = 2
-
-
-# Kamer 6
-
 # entiteiten_lijst = [player_health, zombie_health]
 if deurkeuze_kamer_2.lower() == "a":
     zombie_hit_damage = (zombie_attack - player_defense) # Dit is de hoeveelheid schade een zombie kan toebrengen aan de speler PER SLAG.
@@ -73,23 +88,36 @@ if deurkeuze_kamer_2.lower() == "a":
             else:
                 print("Je hebt de zombie gedood. ")
                 print(f'Je health is nu {player_health}.')
+                print("Je loopt door de volgende deur.")
+                print('')
+                time.sleep(1)
                 break
 
 
 # === [kamer 3] === #
 
+# Dit is nu een verkooppunt, 
+# ieder item dat de goblin verkoopt kost 1 rupee. 
+# De speler mag nu zelf kiezen of hij/zij iets koopt en wat.
+
 items = ("schild", "zwaard")
-welk_item = random.choice(items)
-if welk_item == "schild":
-    item = 'schild'
-    player_defense += 1
-else:
-    item = "zwaard"
-    player_attack += 2
 
 print('Je duwt het open en stap een hele lange kamer binnen.')
-print(f'In deze kamer staat een tafel met daarop een {item}.')
-print(f'Je pakt het {item} op en houd het bij je.')
+print(f'In deze kamer staat een tafel met daarbij een goblin.')
+print(f"Op de tafel staan wat items. Dit zie je staan: {items}")
+print(f"De goblin vraagt per item 1 rupee. Je kunt maar 1 van de ", (len(items)), " kiezen.")
+item_keuze = input("Wil je het schild of het zwaard kopen? of niks? ")
+if item_keuze == "schild":
+    item = "schild"
+    player_defense += 1
+    print(f"Top je hebt voor het {item} gekozen.")
+elif item_keuze == "zwaard":
+    item = "zwaard"
+    player_attack += 2
+    print(f"Top je hebt voor het {item} gekozen.")
+else:
+    print("Je kiest ervoor om niks te kopen")
+
 print('Op naar de volgende deur.')
 print('')
 time.sleep(1)
@@ -102,8 +130,13 @@ cpu_defense = 0
 cpu_health = 3
 cpu_hit_damage = (cpu_attack - player_defense)
 player_hit_damage = (player_attack - cpu_defense)
-print(f'Dapper met je nieuwe {item} loop je de kamer binnen.')
+if item_keuze == "schild" or item_keuze == "zwaard":
+    print(f'Dapper met je nieuwe {item} loop je de kamer binnen.')
+else:
+    print("Je loopt de volgende kamer in")
 print('Je loopt tegen een Cpu aan.')
+print('')
+time.sleep(1)
 
 if cpu_hit_damage <= 0:
     print("Je hebt een te goede verdediging voor de Cpu, hij kan je geen schade toebrengen")
@@ -136,7 +169,9 @@ print('Voorzichtig open je de deur, je wilt niet nog een zombie tegenkomen.')
 print('Tot je verbazig zie je een schatkist in het midden van de kamer staan.')
 print('Je loopt er naartoe.')
 print("Er zit een slot op.")
-print("Heb je de sleutel?")
+print("Heb je de sleutel?") # kan veranderd worden
+print('')
+time.sleep(1)
 
 if got_key == True:
     print("Gefeliciteerd, je hebt de schatkist geopend.")
