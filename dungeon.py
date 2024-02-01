@@ -161,8 +161,6 @@ if deurkeuze_kamer_7 == "" or deurkeuze_kamer_2 == "" or deurkeuze_kamer_6 == "a
 
 # === [kamer 3] === #
 
-# Hier moet een extra deur komen naar de nieuwe kamer 4.
-
 items_goblin = ["schild", "zwaard", "sleutel"]
 items_player = []
 
@@ -215,10 +213,6 @@ time.sleep(1)
 
 # === [kamer 11] === #
 
-# Deze kamer zit vol met pijlen die uit de muur schieten. 
-# Alleen als de speler een schild heeft kan hij hier heelhuids doorheen komen. 
-# Heeft de speler geen schild dan eindigd het spel daar.
-
 if deurkeuze_kamer_3 != "a":
     print("Je loopt een grote kamer binnen.")
     time.sleep(2)
@@ -241,7 +235,7 @@ if deurkeuze_kamer_3 != "a":
 
 # === [kamer 4] === #
 
-# Deze wordt verplaatst.
+# Krijgt een extra deur, deze deur kan gekozen worden na het gevecht.
 
 cpu_attack = 2
 cpu_defense = 0
@@ -256,7 +250,6 @@ if deurkeuze_kamer_3 == "a":
     print('Je loopt tegen een Cpu aan.')
     print('')
     time.sleep(1)
-
     if cpu_hit_damage <= 0:
         print("Je hebt een te goede verdediging voor de Cpu, hij kan je geen schade toebrengen")
     else:
@@ -277,6 +270,14 @@ if deurkeuze_kamer_3 == "a":
                     print("Je hebt de Cpu gedood. ")
                     print(f'Je health is nu {player_health}.')
                     break
+        time.sleep(1)
+        deurkeuze_kamer_4 = input("Je ziet 2 deuren. Wil je (Enter) rechtdoor gaan of (a) de rechtse deur nemen? ")
+        if deurkeuze_kamer_4 == "a":
+            time.sleep(2)
+            # === [kamer 12] === #
+            print("Je opent de deur. Je valt in een diepe put. Hier kom je niet uit en je bent te gewond om verder door te gaan.")
+            print("Game Over")
+            exit()
     print('')
     time.sleep(1)
 
