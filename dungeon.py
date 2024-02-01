@@ -13,6 +13,14 @@ eerste_getal = randint(10, 25)
 tweede_getal = randint(-5, 75)
 som = eerste_getal + tweede_getal
 
+deurkeuze_kamer_2 = "Geen"
+deurkeuze_kamer_3 = "Geen"
+deurkeuze_kamer_4 = "Geen"
+deurkeuze_kamer_6 = "Geen"
+deurkeuze_kamer_7 = "Geen"
+deurkeuze_kamer_8 = "Geen"
+deurkeuze_kamer_9 = "Geen"
+
 
 # === [kamer 1] === #
 
@@ -64,8 +72,6 @@ if deurkeuze_kamer_7 == "a":
 
 # === [kamer 6] === #
 
-# De speler kan nu kiezen om ook vanuit hier naar kamer 3 te gaan.
-
     zombie_attack = 1
     zombie_defense = 0
     zombie_health = 2
@@ -101,8 +107,6 @@ if deurkeuze_kamer_7 == "a":
 
 
 # === [kamer 8] === #
-
-# De speler kan nu kiezen om ook vanuit hier naar kamer 3 te gaan.
 
 if deurkeuze_kamer_7 == "" or deurkeuze_kamer_2 == "" or deurkeuze_kamer_6 == "a":
     print("Je stapt in een hele lange kamer")
@@ -143,7 +147,9 @@ if deurkeuze_kamer_7 == "" or deurkeuze_kamer_2 == "" or deurkeuze_kamer_6 == "a
 
 # === [kamer 9] === #
 
-    if deurkeuze_kamer_8 == "a":
+#Je kunt nu ook vanuit deze kamer naar kamer 4.
+
+if deurkeuze_kamer_8 == "a":
         health_defense = randint(1,2)
         print("Je ziet dat de gehele kamer een vreemde glinstering heeft. Misschien is het betoverd")
         time.sleep(1)
@@ -155,92 +161,97 @@ if deurkeuze_kamer_7 == "" or deurkeuze_kamer_2 == "" or deurkeuze_kamer_6 == "a
             print(f"Je krijgt +{health_defense} health erbij.")
             player_health += 2
             print(f"Je hebt nu {player_health} health.")
+        deurkeuze_kamer_9 = input("Je ziet twee deuren. wil je naar (Enter) links of (a) rechtdoor? ")
         print("")
         time.sleep(1)
 
 
 # === [kamer 3] === #
 
-items_goblin = ["schild", "zwaard", "sleutel"]
-items_player = []
+# De goblin verkoopt nu een bom in plaats van het zwaard. 
+# Met deze bom kun je 2 dingen doen. 
+# Het hek waarachter het zwaard zit opblazen om zo het zwaard te pakken 
+# of de schatkist open blazen om de inhoud te bemachtigen. Als de bom gebruikt is dan is de speler de bom kwijt.
 
-print('Je duwt de volgende deur open en stapt in een grote kamer binnen.') # grammatica goed checken
-print(f'In deze kamer staat een tafel met daarbij een goblin.')
-print(f"Op de tafel staan wat items. Dit zie je staan: {items_goblin}")
-if player_bank_rupee <= 0:
-    print("Je hebt geen rupees om te besteden.")
+items_goblin = ["schild", "bom", "sleutel"]
+items_player = []
+item_keuze = None
+if deurkeuze_kamer_9 == "" or deurkeuze_kamer_8 == "" or deurkeuze_kamer_6 == "":
+    print('Je duwt de volgende deur open en stapt binnen in een grote kamer.') # grammatica goed checken. Verbeterd
+    print(f'In deze kamer staat een tafel met daarbij een goblin.')
+    print(f"Op de tafel staan wat items. Dit zie je staan: {items_goblin}")
+    if player_bank_rupee <= 0:
+        print("Je hebt geen rupees om te besteden.")
+        time.sleep(1)
+    while player_bank_rupee >= 1:
+        print(f"Je hebt op dit moment {player_bank_rupee} rupees.")
+        print(f"De goblin vraagt per item 1 rupee. Je kunt 1 van de ", (len(items_goblin)), " items kiezen.")
+        item_keuze = input("Welk item wil je kopen? of (Enter) niks? ")
+        if item_keuze == "schild" and item_keuze in items_goblin:
+            item = "schild"
+            player_defense += 1
+            print(f"Top je hebt voor het {item} gekozen.")
+            items_goblin.remove(item_keuze)
+            items_player.append(item_keuze)
+            print(f"Dit is je inventory: {items_player}")
+            player_bank_rupee -= 1
+        elif item_keuze == "bom" and item_keuze in items_goblin:
+            item = "bom"
+            player_attack += 2
+            print(f"Top je hebt voor de {item} gekozen.")
+            items_goblin.remove(item_keuze)
+            items_player.append(item_keuze)
+            print(f"Dit is je inventory: {items_player}")
+            player_bank_rupee -= 1
+        elif item_keuze == "sleutel" and item_keuze in items_goblin:
+            item = "sleutel"
+            got_key = True
+            print(f"Top je hebt voor de {item} gekozen.")
+            items_goblin.remove(item_keuze)
+            items_player.append(item_keuze)
+            print(f"Dit is je inventory: {items_player}")
+            player_bank_rupee -= 1
+        else:
+            if item_keuze == "":
+                print("Je kiest ervoor om niks te kopen")
+                print(f"Inventory: {items_player}")
+                break
+            elif item_keuze not in items_goblin:
+                print(f"{item_keuze} heeft de goblin niet.")
+    print('Je ziet twee deuren.')
+    deurkeuze_kamer_3 = input("Kies je (Enter) de linker deur of (a) de rechter deur? ")
+    print('')
     time.sleep(1)
-while player_bank_rupee >= 1:
-    print(f"Je hebt op dit moment {player_bank_rupee} rupees.")
-    print(f"De goblin vraagt per item 1 rupee. Je kunt 1 van de ", (len(items_goblin)), " items kiezen.")
-    item_keuze = input("Welk item wil je kopen? of (Enter) niks? ")
-    if item_keuze == "schild" and item_keuze in items_goblin:
-        item = "schild"
-        player_defense += 1
-        print(f"Top je hebt voor het {item} gekozen.")
-        items_goblin.remove(item_keuze)
-        items_player.append(item_keuze)
-        print(f"Dit is je inventory: {items_player}")
-        player_bank_rupee -= 1
-    elif item_keuze == "zwaard" and item_keuze in items_goblin:
-        item = "zwaard"
-        player_attack += 2
-        print(f"Top je hebt voor het {item} gekozen.")
-        items_goblin.remove(item_keuze)
-        items_player.append(item_keuze)
-        print(f"Dit is je inventory: {items_player}")
-        player_bank_rupee -= 1
-    elif item_keuze == "sleutel" and item_keuze in items_goblin:
-        item = "sleutel"
-        got_key = True
-        print(f"Top je hebt voor de {item} gekozen.")
-        items_goblin.remove(item_keuze)
-        items_player.append(item_keuze)
-        print(f"Dit is je inventory: {items_player}")
-        player_bank_rupee -= 1
-    else:
-        if item_keuze == "":
-            print("Je kiest ervoor om niks te kopen")
-            print(f"Inventory: {items_player}")
-            break
-        elif item_keuze not in items_goblin:
-            print(f"{item_keuze} heeft de goblin niet.")
-print('Je ziet twee deuren.')
-deurkeuze_kamer_3 = input("Kies je (Enter) de linker deur of (a) de rechter deur? ")
-print('')
-time.sleep(1)
 
 
 # === [kamer 11] === #
 
-if deurkeuze_kamer_3 != "a":
-    print("Je loopt een grote kamer binnen.")
-    time.sleep(2)
-    print("Er vliegen pijlen uit de muur.")
-    print("Gebruik je schild")
-    time.sleep(2)
-    if "schild" not in items_player:
-        print("Je hebt geen schild. Je wordt geraakt door meerdere pijlen.")
-        time.sleep(1)
-        print("Helaas je bent te gewond om verder door te gaan.")
-        print("Game over!")
-        exit()
-    if "schild" in items_player:
-        print("Je rent door alle beschietingen heen naar de volgende deur.")
-        time.sleep(1)
-        print("Fijn, zo'n schild")
-        print("")
+    if deurkeuze_kamer_3 != "a":
+        print("Je loopt een grote kamer binnen.")
         time.sleep(2)
+        print("Er vliegen pijlen uit de muur.")
+        print("Gebruik je schild")
+        time.sleep(2)
+        if "schild" not in items_player:
+            print("Je hebt geen schild. Je wordt geraakt door meerdere pijlen.")
+            time.sleep(1)
+            print("Helaas je bent te gewond om verder door te gaan.")
+            print("Game over!")
+            exit()
+        if "schild" in items_player:
+            print("Je rent door alle beschietingen heen naar de volgende deur.")
+            time.sleep(1)
+            print("Fijn, zo'n schild")
+            print("")
+            time.sleep(2)
 
 
 # === [kamer 4] === #
 
-# Krijgt een extra deur, deze deur kan gekozen worden na het gevecht.
-
 cpu_attack = 2
 cpu_defense = 0
 cpu_health = 3
-if deurkeuze_kamer_3 == "a":
+if deurkeuze_kamer_3 == "a" or deurkeuze_kamer_9 == "a":
     cpu_hit_damage = (cpu_attack - player_defense)
     player_hit_damage = (player_attack - cpu_defense)
     if item_keuze == "schild" or item_keuze == "zwaard":
@@ -271,6 +282,24 @@ if deurkeuze_kamer_3 == "a":
                     print(f'Je health is nu {player_health}.')
                     break
         time.sleep(1)
+        
+        # === [kamer 13] === #
+
+        # Hier ligt het zwaard en deze is dus alleen te bereiken met de bom.
+
+        print("Deze muur is beschadigd, maar kan niet gesloopt worden zonder bom.")
+        if "bom" not in items_player:
+            print("Helaas, je hebt geen bom dus je kunt niet achter de muur komen.")
+            time.sleep(1)
+        if "bom" in items_player:
+            print("Met behulp van de bom, is het gelukt om de muur op te blazen.")
+            print("Er ligt een zwaard en dat neem je mee.")
+            time.sleep(1)
+            player_attack += 2
+            items_player.remove("bom")
+            items_player.append("zwaard")
+            print(f"Je inventory: {items_player}")
+            time.sleep(1)
         deurkeuze_kamer_4 = input("Je ziet 2 deuren. Wil je (Enter) rechtdoor gaan of (a) de rechtse deur nemen? ")
         if deurkeuze_kamer_4 == "a":
             time.sleep(2)
@@ -322,6 +351,8 @@ time.sleep(2)
 
 # === [kamer 5] === #
 
+# De schatkist kan dus ook opengemaakt worden met de bom.
+
 print('Voorzichtig open je de deur, je wilt niet nog een zombie tegenkomen.')
 print('Tot je verbazig zie je een schatkist in het midden van de kamer staan.')
 print('Je loopt er naartoe.')
@@ -330,9 +361,9 @@ print("Heb je de sleutel?") # kan veranderd worden
 print('')
 time.sleep(1)
 
-if got_key == True:
+if got_key == True or "bom" in items_player:
     print("Gefeliciteerd, je hebt de schatkist geopend.")
     print("De gouden munten, kristallen en sieraden zijn van jou.")
 else:
-    print("Je hebt geen sleutel.")
+    print("Je hebt geen sleutel of bom om te gebruiken.")
     print("Game over")
