@@ -161,7 +161,10 @@ if deurkeuze_kamer_7 == "" or deurkeuze_kamer_2 == "" or deurkeuze_kamer_6 == "a
 
 # === [kamer 3] === #
 
+# Hier moet een extra deur komen naar de nieuwe kamer 4.
+
 items_goblin = ["schild", "zwaard", "sleutel"]
+items_player = []
 
 print('Je duwt de volgende deur open en stapt in een grote kamer binnen.') # grammatica goed checken
 print(f'In deze kamer staat een tafel met daarbij een goblin.')
@@ -178,76 +181,107 @@ while player_bank_rupee >= 1:
         player_defense += 1
         print(f"Top je hebt voor het {item} gekozen.")
         items_goblin.remove(item_keuze)
+        items_player.append(item_keuze)
+        print(f"Dit is je inventory: {items_player}")
         player_bank_rupee -= 1
     elif item_keuze == "zwaard" and item_keuze in items_goblin:
         item = "zwaard"
         player_attack += 2
         print(f"Top je hebt voor het {item} gekozen.")
         items_goblin.remove(item_keuze)
+        items_player.append(item_keuze)
+        print(f"Dit is je inventory: {items_player}")
         player_bank_rupee -= 1
     elif item_keuze == "sleutel" and item_keuze in items_goblin:
         item = "sleutel"
         got_key = True
         print(f"Top je hebt voor de {item} gekozen.")
         items_goblin.remove(item_keuze)
+        items_player.append(item_keuze)
+        print(f"Dit is je inventory: {items_player}")
         player_bank_rupee -= 1
     else:
         if item_keuze == "":
             print("Je kiest ervoor om niks te kopen")
+            print(f"Inventory: {items_player}")
             break
         elif item_keuze not in items_goblin:
             print(f"{item_keuze} heeft de goblin niet.")
-print('Op naar de volgende deur.')
+print('Je ziet twee deuren.')
+deurkeuze_kamer_3 = input("Kies je (Enter) de linker deur of (a) de rechter deur? ")
 print('')
 time.sleep(1)
+
+
+# === [kamer 11] === #
+
+# Deze kamer zit vol met pijlen die uit de muur schieten. 
+# Alleen als de speler een schild heeft kan hij hier heelhuids doorheen komen. 
+# Heeft de speler geen schild dan eindigd het spel daar.
+
+if deurkeuze_kamer_3 != "a":
+    print("Je loopt een grote kamer binnen.")
+    time.sleep(2)
+    print("Er vliegen pijlen uit de muur.")
+    print("Gebruik je schild")
+    time.sleep(2)
+    if "schild" not in items_player:
+        print("Je hebt geen schild. Je wordt geraakt door meerdere pijlen.")
+        time.sleep(1)
+        print("Helaas je bent te gewond om verder door te gaan.")
+        print("Game over!")
+        exit()
+    if "schild" in items_player:
+        print("Je rent door alle beschietingen heen naar de volgende deur.")
+        time.sleep(1)
+        print("Fijn, zo'n schild")
+        print("")
+        time.sleep(2)
 
 
 # === [kamer 4] === #
 
+# Deze wordt verplaatst.
+
 cpu_attack = 2
 cpu_defense = 0
 cpu_health = 3
-cpu_hit_damage = (cpu_attack - player_defense)
-player_hit_damage = (player_attack - cpu_defense)
-if item_keuze == "schild" or item_keuze == "zwaard":
-    print(f'Dapper met je nieuwe {item} loop je de kamer binnen.') # Nu benoemd de print maar 1 item. Het laatste wat gekocht is. Een list met de gekochte items kan het evt oplossen.
-else:
-    print("Je loopt de volgende kamer in")
-print('Je loopt tegen een Cpu aan.')
-print('')
-time.sleep(1)
+if deurkeuze_kamer_3 == "a":
+    cpu_hit_damage = (cpu_attack - player_defense)
+    player_hit_damage = (player_attack - cpu_defense)
+    if item_keuze == "schild" or item_keuze == "zwaard":
+        print(f'Dapper met je nieuwe {item} loop je de kamer binnen.') # Nu benoemd de print maar 1 item. Het laatste wat gekocht is. Een list met de gekochte items kan het evt oplossen.
+    else:
+        print("Je loopt de volgende kamer in")
+    print('Je loopt tegen een Cpu aan.')
+    print('')
+    time.sleep(1)
 
-if cpu_hit_damage <= 0:
-    print("Je hebt een te goede verdediging voor de Cpu, hij kan je geen schade toebrengen")
-else:
-    while cpu_health > 0 or player_health > 0:
-            cpu_health -= player_hit_damage
-            print(cpu_health, "Cpu")
-            if cpu_health > 0:
-                player_health -= cpu_hit_damage
-                print(player_health, "Speler")
-                if player_health > 0:
-                    continue
+    if cpu_hit_damage <= 0:
+        print("Je hebt een te goede verdediging voor de Cpu, hij kan je geen schade toebrengen")
+    else:
+        while cpu_health > 0 or player_health > 0:
+                cpu_health -= player_hit_damage
+                print(cpu_health, "Cpu")
+                if cpu_health > 0:
+                    player_health -= cpu_hit_damage
+                    print(player_health, "Speler")
+                    if player_health > 0:
+                        continue
+                    else:
+                        print("Helaas je bent te gewond om verder door te gaan.")
+                        print("Game Over")
+                        exit()
+                        # break
                 else:
-                    print("Helaas je bent te gewond om verder door te gaan.")
-                    print("Game Over")
-                    exit()
-                    # break
-            else:
-                print("Je hebt de Cpu gedood. ")
-                print(f'Je health is nu {player_health}.')
-                break
-print('')
-time.sleep(1)
+                    print("Je hebt de Cpu gedood. ")
+                    print(f'Je health is nu {player_health}.')
+                    break
+    print('')
+    time.sleep(1)
 
 
 # === [kamer 10] === #
-
-# De nieuwe kamer bevat een dungeon boss. 
-# Deze heeft een attack van 3, 1 defence en 5 health.
-
-# Dit is de eerste vijand met meer dan 0 defence, 
-# dus houd er rekening mee dat de hit damage van de speler ook 0 kan worden in het gevecht.
 
 boss_attack = 3
 boss_defense = 1
