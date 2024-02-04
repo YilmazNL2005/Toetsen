@@ -8,6 +8,7 @@ player_health = 3
 player_bank_rupee = 0
 
 got_key = False
+got_dolk = False
 
 eerste_getal = randint(10, 25)
 tweede_getal = randint(-5, 75)
@@ -65,12 +66,15 @@ if deurkeuze_kamer_7 == "a":
     time.sleep(1)
     print('Je ziet een deur achter het standbeeld.')
     print("Maar links zie je ook een deur.")
-    deurkeuze_kamer_2 = input("Welke van de twee deuren wil je nemen? (a) De deur achter het stanndbeeld of (Enter) de deur rechts van het standbeeld? ")
+    deurkeuze_kamer_2 = input("Welke van de twee deuren wil je nemen? (a) De deur achter het standbeeld of (Enter) de deur rechts van het standbeeld? ")
     print('')
     time.sleep(1)
 
 
 # === [kamer 6] === #
+
+# Wanneer de speler de zombie verslaat krijgt hij een dolk, 
+# deze dolk geeft +1 op de attack waarde en kan in combinatie met het zwaard gebruikt worden.
 
     zombie_attack = 1
     zombie_defense = 0
@@ -97,6 +101,8 @@ if deurkeuze_kamer_7 == "a":
                         # break
                 else:
                     print("Je hebt de zombie gedood. ")
+                    print("De zombie heeft een dolk laten vallen. Deze kun je 1x gebruiken. Het geeft je 1+ attack damage")
+                    got_dolk = True
                     print(f'Je health is nu {player_health}.')
                     print("Je loopt door de volgende deur.")
                     print('')
@@ -147,8 +153,6 @@ if deurkeuze_kamer_7 == "" or deurkeuze_kamer_2 == "" or deurkeuze_kamer_6 == "a
 
 # === [kamer 9] === #
 
-#Je kunt nu ook vanuit deze kamer naar kamer 4.
-
 if deurkeuze_kamer_8 == "a":
         health_defense = randint(1,2)
         print("Je ziet dat de gehele kamer een vreemde glinstering heeft. Misschien is het betoverd")
@@ -167,11 +171,6 @@ if deurkeuze_kamer_8 == "a":
 
 
 # === [kamer 3] === #
-
-# De goblin verkoopt nu een bom in plaats van het zwaard. 
-# Met deze bom kun je 2 dingen doen. 
-# Het hek waarachter het zwaard zit opblazen om zo het zwaard te pakken 
-# of de schatkist open blazen om de inhoud te bemachtigen. Als de bom gebruikt is dan is de speler de bom kwijt.
 
 items_goblin = ["schild", "bom", "sleutel"]
 items_player = []
@@ -254,6 +253,13 @@ cpu_health = 3
 if deurkeuze_kamer_3 == "a" or deurkeuze_kamer_9 == "a":
     cpu_hit_damage = (cpu_attack - player_defense)
     player_hit_damage = (player_attack - cpu_defense)
+    print(player_hit_damage)
+    time.sleep(3)
+    if got_dolk:
+        player_hit_damage += 1
+        print(player_hit_damage)
+        time.sleep(3)
+        got_dolk = False
     if item_keuze == "schild" or item_keuze == "zwaard":
         print(f'Dapper met je nieuwe {item} loop je de kamer binnen.') # Nu benoemd de print maar 1 item. Het laatste wat gekocht is. Een list met de gekochte items kan het evt oplossen.
     else:
@@ -283,9 +289,8 @@ if deurkeuze_kamer_3 == "a" or deurkeuze_kamer_9 == "a":
                     break
         time.sleep(1)
         
-        # === [kamer 13] === #
 
-        # Hier ligt het zwaard en deze is dus alleen te bereiken met de bom.
+        # === [kamer 13] === #
 
         print("Deze muur is beschadigd, maar kan niet gesloopt worden zonder bom.")
         if "bom" not in items_player:
@@ -318,7 +323,13 @@ boss_defense = 1
 boss_health = 5
 boss_hit_damage = (boss_attack - player_defense)
 player_hit_damage = (player_attack - boss_defense)
-
+print(player_hit_damage)
+time.sleep(3)
+if got_dolk:
+    player_hit_damage += 1
+    print(player_hit_damage)
+    time.sleep(3)
+    got_dolk = False                                        # Heeft weinig nut als dit het laatste gevecht van de Dungeon is. Scheelt weer een regel code.
 print("Je komt een erg grote kamer binnen")
 time.sleep(1)
 print("Het is de Dungeon Boss")
@@ -350,8 +361,6 @@ time.sleep(2)
 
 
 # === [kamer 5] === #
-
-# De schatkist kan dus ook opengemaakt worden met de bom.
 
 print('Voorzichtig open je de deur, je wilt niet nog een zombie tegenkomen.')
 print('Tot je verbazig zie je een schatkist in het midden van de kamer staan.')
