@@ -341,6 +341,8 @@ if deurkeuze_kamer_3 == "a" or deurkeuze_kamer_9 == "a":
                     exit()
             print('')
             time.sleep(1)
+        else:
+            print("Je kiest ervoor niks te doen met")
 
 
 # === [kamer 10] === #
