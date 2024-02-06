@@ -1,6 +1,5 @@
-import time, math
+import time
 from random import randint
-import random
 
 player_attack = 1
 player_defense = 0
@@ -11,6 +10,8 @@ got_key = False
 got_dolk = False
 got_boss_key = False
 got_door_open_boss = False
+
+use_balista = ""
 
 eerste_getal = randint(10, 25)
 tweede_getal = randint(-5, 75)
@@ -52,6 +53,8 @@ time.sleep(1)
 
 # === [kamer 2] === #
 
+# Als de speler de vraag van het standbeeld verkeerd beantwoord hoor hij/zij een geluid uit kamer 6 komen.
+
 if deurkeuze_kamer_7 == "a":
     print('Je stapt door de deur heen en je ziet een standbeeld voor je.')
     print('Het standbeeld heeft een sleutel vast.')
@@ -65,6 +68,7 @@ if deurkeuze_kamer_7 == "a":
         print(f"Je hebt nu {player_bank_rupee} rupee.")
     else:
         print('Er gebeurt niets....')
+        print("GGGRRRRR")
     time.sleep(1)
     print('Je ziet een deur achter het standbeeld.')
     print("Maar links zie je ook een deur.")
@@ -75,6 +79,12 @@ if deurkeuze_kamer_7 == "a":
 
 # === [kamer 6] === #
 
+# De zombie heeft nu de sleutel ipv de dolk.
+
+# Na het gevecht met de zombie kan de speler kiezen welke kant zo op gaan, 
+# maar alleen als ze de vraag van het standbeeld verkeerd hebben beantwoord, 
+# deze gang (met super lange trap) gaat naar een uitkijkpunt (kamer 15) naast de kamer van de boss.
+
     zombie_attack = 1
     zombie_defense = 0
     zombie_health = 2
@@ -82,6 +92,11 @@ if deurkeuze_kamer_7 == "a":
     if deurkeuze_kamer_7 == "" or deurkeuze_kamer_2.lower() == "a":
         zombie_hit_damage = (zombie_attack - player_defense) # Dit is de hoeveelheid schade een zombie kan toebrengen aan de speler PER SLAG.
         player_hit_damage = (player_attack - zombie_defense)
+        print("Je komt een nieuwe kamer in.")
+        print("Een zombie blokkeerd de weg.")
+        time.sleep(2)
+        print("Om verder te gaan. Moet je de zombie doden")
+        time.sleep(1)
         if zombie_hit_damage <= 0:
             print('Jij hebt een te goede verdediging voor de zombie, hij kan je geen schade toebrengen.')
         else:
@@ -100,22 +115,24 @@ if deurkeuze_kamer_7 == "a":
                         # break
                 else:
                     print("Je hebt de zombie gedood. ")
-                    print("De zombie heeft een dolk laten vallen. Deze kun je 1x gebruiken. Het geeft je 1+ attack damage")
-                    got_dolk = True
+                    print("De zombie heeft een sleutel laten vallen. ")
+                    got_key = True
                     print(f'Je health is nu {player_health}.')
-                    print("Je loopt door de volgende deur.")
+                    print("Je loopt door naar de volgende deur.")
                     print('')
                     time.sleep(1)
                     break
-        deurkeuze_kamer_6 = input("Je ziet 2 deuren. (Enter) Wil je rechtdoor gaan of (a) wil je naar rechts? ")
+        if antwoord != som:
+            deurkeuze_kamer_6 = input("Je ziet 2 deuren. (Enter) Wil je rechtdoor gaan of (a) wil je naar rechts of (b) wil je naar links? ")
+        else:
+            deurkeuze_kamer_6 = input("Je ziet 2 deuren. (Enter) Wil je rechtdoor gaan of (a) wil je naar rechts? ")
+        print("")
         time.sleep(1)
 
 
 # === [kamer 8] === #
-
-# Vanuit deze kamer kun je nu ook naar kamer 14.
-
-if deurkeuze_kamer_7 == "" or deurkeuze_kamer_2 == "" or deurkeuze_kamer_6 == "a":
+        
+if (deurkeuze_kamer_7 == "" or deurkeuze_kamer_2 == "" or deurkeuze_kamer_6 == "a") and deurkeuze_kamer_6 != "b":
     print("Je stapt in een hele lange kamer")
     print("Je ziet een gokmachine staan en loopt er naartoe.")
     gok_keuze = input("(a) Wil je de gokmachine gebruiken of (Enter) niet? ")
@@ -154,7 +171,7 @@ if deurkeuze_kamer_7 == "" or deurkeuze_kamer_2 == "" or deurkeuze_kamer_6 == "a
 
 # === [kamer 14] === #
 
-if deurkeuze_kamer_8 == "b":
+if deurkeuze_kamer_8 == "b" and deurkeuze_kamer_6 != "b":
     got_boss_key = True
     print("Je loopt een kleine lege kamer in.")
     print("Je ziet een sleutel met een doodshoofd erop.")
@@ -165,7 +182,7 @@ if deurkeuze_kamer_8 == "b":
 
 # === [kamer 9] === #
 
-if deurkeuze_kamer_8 == "a" or got_boss_key:
+if (deurkeuze_kamer_8 == "a" or got_boss_key) and deurkeuze_kamer_6 != "b":
         health_defense = randint(1,2)
         print("Je ziet dat de gehele kamer een vreemde glinstering heeft. Misschien is het betoverd")
         time.sleep(1)
@@ -184,10 +201,12 @@ if deurkeuze_kamer_8 == "a" or got_boss_key:
 
 # === [kamer 3] === #
 
-items_goblin = ["schild", "bom", "sleutel"]
+# De goblin verkoopt nu de dolk ipv de sleutel.
+
+items_goblin = ["schild", "bom", "dolk"]
 items_player = []
 item_keuze = None
-if deurkeuze_kamer_9 == "" or deurkeuze_kamer_8 == "" or deurkeuze_kamer_6 == "":
+if (deurkeuze_kamer_9 == "" or deurkeuze_kamer_8 == "" or deurkeuze_kamer_6 == "") and deurkeuze_kamer_6 != "b":
     print('Je duwt de volgende deur open en stapt binnen in een grote kamer.') # grammatica goed checken. Verbeterd
     print(f'In deze kamer staat een tafel met daarbij een goblin.')
     print(f"Op de tafel staan wat items. Dit zie je staan: {items_goblin}")
@@ -214,10 +233,11 @@ if deurkeuze_kamer_9 == "" or deurkeuze_kamer_8 == "" or deurkeuze_kamer_6 == ""
             items_player.append(item_keuze)
             print(f"Dit is je inventory: {items_player}")
             player_bank_rupee -= 1
-        elif item_keuze == "sleutel" and item_keuze in items_goblin:
-            item = "sleutel"
-            got_key = True
+        elif item_keuze == "dolk" and item_keuze in items_goblin:
+            item = "dolk"
+            got_dolk = True
             print(f"Top je hebt voor de {item} gekozen.")
+            print(f"Deze {item} geeft je 1+ attack damage.") # Deze kun je 1x gebruiken. Het geeft je 1+ attack damage
             items_goblin.remove(item_keuze)
             items_player.append(item_keuze)
             print(f"Dit is je inventory: {items_player}")
@@ -234,9 +254,8 @@ if deurkeuze_kamer_9 == "" or deurkeuze_kamer_8 == "" or deurkeuze_kamer_6 == ""
     print('')
     time.sleep(1)
 
-
 # === [kamer 11] === #
-
+    
     if deurkeuze_kamer_3 != "a":
         print("Je loopt een grote kamer binnen.")
         time.sleep(2)
@@ -262,7 +281,7 @@ if deurkeuze_kamer_9 == "" or deurkeuze_kamer_8 == "" or deurkeuze_kamer_6 == ""
 cpu_attack = 2
 cpu_defense = 0
 cpu_health = 3
-if deurkeuze_kamer_3 == "a" or deurkeuze_kamer_9 == "a":
+if (deurkeuze_kamer_3 == "a" or deurkeuze_kamer_9 == "a") and deurkeuze_kamer_6 != "b":
     cpu_hit_damage = (cpu_attack - player_defense)
     player_hit_damage = (player_attack - cpu_defense)
     print(player_hit_damage)
@@ -272,8 +291,8 @@ if deurkeuze_kamer_3 == "a" or deurkeuze_kamer_9 == "a":
         print(player_hit_damage)
         time.sleep(3)
         got_dolk = False
-    if item_keuze == "schild" or item_keuze == "zwaard":
-        print(f'Dapper met je nieuwe {item} loop je de kamer binnen.') # Nu benoemd de print maar 1 item. Het laatste wat gekocht is. Een list met de gekochte items kan het evt oplossen.
+    if len(items_player) >= 1:
+        print(f'Dapper met de volgende items: {items_player} loop je de kamer binnen.')
     else:
         print("Je loopt de volgende kamer in")
     print('Je loopt tegen een Cpu aan.')
@@ -303,7 +322,7 @@ if deurkeuze_kamer_3 == "a" or deurkeuze_kamer_9 == "a":
         
 
         # === [kamer 13] === #
-
+        
         print("Deze muur is beschadigd, maar kan niet gesloopt worden zonder bom.")
         room_13_open = input("Heb je een bom? (ja) Wil je die dan gebruiken of (Enter) niet? ")
         if room_13_open == "ja":
@@ -343,17 +362,43 @@ if deurkeuze_kamer_3 == "a" or deurkeuze_kamer_9 == "a":
             time.sleep(1)
         else:
             print("Je kiest ervoor niks te doen met")
+        deurkeuze_kamer_4 = input("Je ziet 2 deuren. Wil je (Enter) rechtdoor gaan of (a) de rechtse deur nemen? ")
+        while True:
+            if deurkeuze_kamer_4 == "":
+                if got_boss_key or "bom" in items_player:
+                    print("Je hebt het slot van de deur af kunnen halen.")
+                    print("")
+                    time.sleep(2)
+                    break
+                else:
+                    print("Oei je hebt niks om de deur mee te openen.")
+                    time.sleep(2)
+                    print("Je loopt door de deur die wel open is.")
+                    deurkeuze_kamer_4 = "a"
+                    time.sleep(2)
+            if deurkeuze_kamer_4 == "a":
+                time.sleep(2)
+                # === [kamer 12] === #
+                print("Je opent de deur. Je valt in een diepe put. Hier kom je niet uit en je bent te gewond om verder door te gaan.")
+                print("Game Over")
+                exit()
+
+
+# === [kamer 15] === #
+
+if deurkeuze_kamer_6 == "b":
+    print("Je bent in kamer 15.")
+    use_balista = input("Wil je de balista gebruiken om de boss te doden? (ja) of (nee)? ")
 
 
 # === [kamer 10] === #
 
-# Het slot op deze kamer is op twee manieren te openen, met de sleutel uit kamer 14 of met de bom als de speler die heeft.
+# Het gevecht hier vind niet plaats als de speler er voor heeft gekozen om de balista in kamer 15 te gebruiken.
 
 boss_attack = 3
 boss_defense = 1
 boss_health = 5
-
-if got_boss_key or deurkeuze_kamer_3 != "a":
+if got_boss_key or deurkeuze_kamer_3 != "a" or deurkeuze_kamer_6 == "b":
     boss_hit_damage = (boss_attack - player_defense)
     player_hit_damage = (player_attack - boss_defense)
     print(player_hit_damage)
@@ -362,17 +407,20 @@ if got_boss_key or deurkeuze_kamer_3 != "a":
         player_hit_damage += 1
         print(player_hit_damage)
         time.sleep(3)
-        got_dolk = False                                        # Heeft weinig nut als dit het laatste gevecht van de Dungeon is. Scheelt weer een regel code.
     print("Je komt een erg grote kamer binnen")
     time.sleep(1)
     print("Het is de Dungeon Boss")
-    print("Om langs de volgende deur te gaan, moet je de boss doden.")
     time.sleep(1)
-    if player_hit_damage < 0:
-        print("De Dungeon Boss is te sterk.")
-        print("Game Over")
-        exit()
-    else:
+    if (player_hit_damage <= 0 and use_balista == "nee") or player_hit_damage <= 0 and use_balista != "ja":
+            print("De Dungeon Boss is te sterk.")
+            print("Game Over")
+            exit()
+    if use_balista == "ja":
+        print("De boss is dood door de balista.")
+        print("Je kunt verder naar de volgende kamer")
+        time.sleep(1)
+    elif use_balista == "nee":
+        print("Om langs de volgende deur te gaan, moet je de boss doden.")
         while boss_health > 0 or player_health > 0:
             boss_health -= player_hit_damage
             print(boss_health, "Boss")
@@ -391,18 +439,18 @@ if got_boss_key or deurkeuze_kamer_3 != "a":
                 break
     print("")
     time.sleep(2)
-
-
+    
+    
     # === [kamer 5] === #
-
+    
     print('Voorzichtig open je de deur, je wilt niet nog een zombie tegenkomen.')
     print('Tot je verbazig zie je een schatkist in het midden van de kamer staan.')
     print('Je loopt er naartoe.')
+    time.sleep(1)
     print("Er zit een slot op.")
     print("Heb je de sleutel?") # kan veranderd worden
     print('')
     time.sleep(1)
-
     if got_key == True or "bom" in items_player:
         print("Gefeliciteerd, je hebt de schatkist geopend.")
         print("De gouden munten, kristallen en sieraden zijn van jou.")
